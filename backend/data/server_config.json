@@ -1,0 +1,13 @@
+{
+    "dps":{
+        "test":"",
+        "qs":"",
+        "prod":""
+    },
+    "e2ewebstarter":{
+        "test":"lxf202p1170.wob.vw.vwg",
+        "qs":["lxf202p1269.wob.vw.vwg", "lxf202p1270.wob.vw.vwg"],
+        "prod":["lxf201p1309.wob.vw.vwg", "lxf202p1299.wob.vw.vwg"]
+    }
+        
+}
