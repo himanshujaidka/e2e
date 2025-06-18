@@ -7,16 +7,16 @@ import BubbleChartRoundedIcon from '@mui/icons-material/BubbleChartRounded';
 
 
 
-const Drawer = ({setSelectedApp, setSelectedEnv}) => {
+const Drawer = ({setSelectedApp, setSelectedEnv, setSelectedServerIndex}) => {
 
-  const handleClick = (app, env) => {
-    console.log(`Selected ${app} - ${env}`);
+  const handleClick = (app, env, serverIndex  = 0) => {
+    console.log(`Selected ${app} - ${env} -  serverIndex: ${serverIndex}`);
     setSelectedApp(app);
     setSelectedEnv(env);
+    setSelectedServerIndex(serverIndex);
   };
-
+  
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
       <Sidebar className="app">
         <Menu>
           <MenuItem className="menu1">
@@ -28,14 +28,14 @@ const Drawer = ({setSelectedApp, setSelectedEnv}) => {
             <MenuItem icon={<BubbleChartRoundedIcon />}> PROD </MenuItem>
           </SubMenu>
           <SubMenu label="E2E-Webstarter-Service" icon={<ArrowRightIcon />}>
-            <MenuItem icon={<TimelineRoundedIcon />}> TEST </MenuItem>
-            <MenuItem icon={<BubbleChartRoundedIcon />}> QS </MenuItem>
-            <MenuItem icon={<BubbleChartRoundedIcon />}> PROD </MenuItem>
-          </SubMenu>
-          <SubMenu label="PROMPT" icon={<ArrowRightIcon />}>
-            <MenuItem icon={<TimelineRoundedIcon />} onClick={() => handleClick("e2e-webstarter-service", "test")}> TEST </MenuItem>
+          <MenuItem icon={<TimelineRoundedIcon />} onClick={() => handleClick("e2e-webstarter-service", "test")}> TEST </MenuItem>
             <MenuItem icon={<BubbleChartRoundedIcon />} onClick={() => handleClick("e2e-webstarter-service", "qs")}> QS </MenuItem>
             <MenuItem icon={<BubbleChartRoundedIcon />} onClick={() => handleClick("e2e-webstarter-service", "prod")}> PROD </MenuItem>
+          </SubMenu>
+          <SubMenu label="PROMPT" icon={<ArrowRightIcon />}>
+            <MenuItem icon={<TimelineRoundedIcon />} onClick={() => handleClick("prompt", "test",0)}> TEST </MenuItem>
+            <MenuItem icon={<BubbleChartRoundedIcon />} onClick={() => handleClick("prompt", "qs",0)}> QS </MenuItem>
+            <MenuItem icon={<BubbleChartRoundedIcon />} onClick={() => handleClick("prompt", "prod",0)}> PROD </MenuItem>
           </SubMenu>
           <SubMenu label="PLUTO" icon={<ArrowRightIcon />}>
             <MenuItem icon={<TimelineRoundedIcon />}> TEST </MenuItem>
@@ -62,11 +62,9 @@ const Drawer = ({setSelectedApp, setSelectedEnv}) => {
             <MenuItem icon={<BubbleChartRoundedIcon />}> QS </MenuItem>
             <MenuItem icon={<BubbleChartRoundedIcon />}> PROD </MenuItem>
           </SubMenu>
-          <MenuItem icon={<ArrowRightIcon />}> JUMP SERVER </MenuItem>
+          <MenuItem icon={<ArrowRightIcon />} onClick={() => handleClick("jump-server", "")}> JUMP SERVER </MenuItem>
         </Menu>
       </Sidebar>
-      <h1>WELCOME TO E2E OneDashboard</h1>
-    </div>
     );
   };
   export default Drawer;
