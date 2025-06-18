@@ -1,66 +1,100 @@
-// import React, { useState } from 'react';
-// import { accessRemote } from '../api/backend';
-
-// const RemoteAccess = () => {
-//   const [data, setData] = useState('');
-//   const [error, setError] = useState('');
-
-//   const handleClick = async () => {
-//     setError('');
-//     const result = await accessRemote();
-//     if (result.status === 'success') {
-//       setData(JSON.stringify(result.data, null, 2));
-//     } else {
-//       setError(result.message || 'Error accessing remote');
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h2>Access Remote Server</h2>
-//       <button onClick={handleClick}>Access</button>
-//       {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-//       <pre>{data}</pre>
-//     </div>
-//   );
-// };
-
-// export default RemoteAccess;
-
-// src/components/RemoteAccess.js
 import React, { useState } from "react";
-import { connectToServer } from "../api/backend";
+import { connectToServer } from "../api/backend";  // only one function now
+import {
+  Box,
+  Button,
+  Typography,
+  Stack,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 
-const RemoteAccess = ({ app, env, user }) => {
-  const [status, setStatus] = useState("");
+const RemoteAccess = ({ app, env, user, onConnected }) => {
+  const [status, setStatus] = useState(null);
+  const [loadingIndex, setLoadingIndex] = useState(null);
+  const [connectedIndex, setConnectedIndex] = useState(null);
+
+  const isJumpServer = app === "jump-server";
+  const isMultiServer = !isJumpServer && (env === "qs" || env === "prod");
 
   const handleConnect = async (index) => {
-    setStatus("Connecting...");
+    setLoadingIndex(index);
+    setConnectedIndex(null);
+    setStatus(null);
 
-    const result = await connectToServer({ app, env, user, server_index: index });
+    // Single unified connectToServer function handles jump-server internally
+    const result = await connectToServer({
+      app,
+      env: isJumpServer ? undefined : env, // omit env for jump-server
+      user,
+      server_index: index,
+    });
+
+    setLoadingIndex(null);
 
     if (result.success) {
-      setStatus(`Connected: ${JSON.stringify(result.data)}`);
+      setConnectedIndex(index);
+      setStatus({
+        type: "success",
+        message: isJumpServer
+          ? `Connected to Jump Server`
+          : `Connected to ${env.toUpperCase()} ${index + 1}`,
+      });
+      if (onConnected) {
+        onConnected(true);  // notify parent that connection succeeded
+      }
     } else {
-      setStatus(`Error: ${result.error}`);
+      setStatus({
+        type: "error",
+        message: `Error: ${result.error}`,
+      });
+      if (onConnected) {
+        onConnected(false); // notify parent of failure
+      }
     }
   };
 
+  const renderButton = (index, label, outlined = false) => {
+    const isLoading = loadingIndex === index;
+    const isConnected = connectedIndex === index;
+
+    return (
+      <Button
+        key={index}
+        variant={isConnected ? "contained" : outlined ? "outlined" : "contained"}
+        color={isConnected ? "success" : "primary"}
+        onClick={() => handleConnect(index)}
+        disabled={isLoading}
+      >
+        {isLoading ? <CircularProgress size={24} /> : label}
+      </Button>
+    );
+  };
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>{app.toUpperCase()} - {env.toUpperCase()}</h2>
-      {(env === "qs" || env === "prod") ? (
-        <>
-          <button onClick={() => handleConnect(0)}>Connect to {env.toUpperCase()} 1</button>
-          <button onClick={() => handleConnect(1)}>Connect to {env.toUpperCase()} 2</button>
-        </>
-      ) : (
-        <button onClick={() => handleConnect(0)}>Connect to {env.toUpperCase()} Server</button>
-      )}
-      <p>{status}</p>
-    </div>
+    <Box>
+      <Typography variant="h5" gutterBottom>
+        {isJumpServer
+          ? "Jump Server"
+          : `${app.toUpperCase()} - ${env.toUpperCase()}`}
+      </Typography>
+
+      <Stack direction="row" spacing={2} mb={2}>
+        {isJumpServer ? (
+          renderButton(0, "Connect to Jump Server")
+        ) : isMultiServer ? (
+          <>
+            {renderButton(0, `Connect to ${env.toUpperCase()} 1`)}
+            {renderButton(1, `Connect to ${env.toUpperCase()} 2`, true)}
+          </>
+        ) : (
+          renderButton(0, `Connect to ${env.toUpperCase()} Server`)
+        )}
+      </Stack>
+
+      {status && <Alert severity={status.type}>{status.message}</Alert>}
+    </Box>
   );
 };
 
 export default RemoteAccess;
-

@@ -4,10 +4,18 @@
         "qs":"",
         "prod":""
     },
-    "e2ewebstarter":{
+    "e2e-webstarter-service":{
         "test":"lxf202p1170.wob.vw.vwg",
         "qs":["lxf202p1269.wob.vw.vwg", "lxf202p1270.wob.vw.vwg"],
         "prod":["lxf201p1309.wob.vw.vwg", "lxf202p1299.wob.vw.vwg"]
+    },
+    "jump-server":{
+        "server":"lxf201p207.wob.vw.vwg"
+    },
+    "prompt":{
+        "test":"lxf202p1488.wob.vw.vwg",
+        "qs":["lxf202p1489.wob.vw.vwg", "lxf201p1596.wob.vw.vwg"],
+        "prod":["lxf202p279.wob.vw.vwg", "lxf201p280.wob.vw.vwg"]
     }
         
 }
