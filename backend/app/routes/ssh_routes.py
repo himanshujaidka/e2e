@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 from typing import Optional
-from app.services.ssh_service import list_remote_files, run_remote_script, connect_ssh
+from app.services.ssh_service import current_connection, list_remote_files, run_remote_script, connect_ssh
 from app.services.application_service import get_servers_for_app
 
 router = APIRouter()
@@ -96,14 +96,14 @@ async def run_script(request: RunScriptRequest):
 
     if not isinstance(env_servers, list):
         env_servers = [env_servers]
-
+    
     if request.server_index >= len(env_servers) or request.server_index < 0:
         raise HTTPException(status_code=400, detail="Invalid server index")
 
     host = env_servers[request.server_index]
 
     # Check if connected to the requested host
-    if current_connection["hostname"] != host or current_connection["ssh"] is None:
+    if current_connection["hostname"] != host or current_connection["ssh_client"] is None:
         raise HTTPException(
             status_code=400,
             detail="You need to connect to the host first before running the script."
@@ -112,8 +112,6 @@ async def run_script(request: RunScriptRequest):
     # Run the script on remote server
     result = run_remote_script(hostname=host, username=request.user, script_path=request.script_path)
     return result
-
-
 # @router.get("/list-files")
 # def list_files():
 #     return list_remote_files()
