@@ -27,6 +27,7 @@ const HomePage = () => {
   const [selectedApp, setSelectedApp] = useState(null);
   const [selectedEnv, setSelectedEnv] = useState(null);
   const [selectedServerIndex, setSelectedServerIndex] = useState(0);
+  const [connectedIndex, setConnectedIndex] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
   const sshUser = "e2e";
   const showRestartButton = selectedApp === "prompt" && selectedEnv === "qs";
@@ -54,6 +55,8 @@ const HomePage = () => {
                 app={selectedApp}
                 env={selectedEnv}
                 user={sshUser}
+                connectedIndex={connectedIndex}
+                setConnectedIndex={setConnectedIndex}
                 serverIndex={selectedServerIndex}
                 onConnected={setIsConnected} 
               />
@@ -67,7 +70,7 @@ const HomePage = () => {
                     app={selectedApp}
                     env={selectedEnv}
                     user={sshUser}
-                    serverIndex={selectedServerIndex}
+                    serverIndex={connectedIndex} 
                   />
                 </div>
               )}

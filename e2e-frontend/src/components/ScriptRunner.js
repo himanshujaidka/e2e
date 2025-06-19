@@ -45,7 +45,7 @@ const ScriptRunner = ({ app, env, user, serverIndex }) => {
       env,
       user,
       server_index: serverIndex,
-      script_path: "/home/e2e/script/test.py",  // your script path
+      script_path: "/home/e2e/script/prompt_restart.py",
     });
 
     setLoading(false);
@@ -64,7 +64,7 @@ const ScriptRunner = ({ app, env, user, serverIndex }) => {
     <div>
       <h2>Run Remote Script</h2>
       <button onClick={handleClick} disabled={loading}>
-        {loading ? "Running..." : "Restart Server"}
+        {loading ? "Running..." : "Restart Application"}
       </button>
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
       <pre>{output}</pre>

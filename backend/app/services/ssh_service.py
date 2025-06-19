@@ -49,10 +49,10 @@ def list_remote_files(hostname, username, path):
 
 def run_remote_script(hostname, username=DEFAULT_SSH_USER, script_path="/home/e2e/script/test.py"):
     # Check if connected and to the same host
-    if current_connection["hostname"] != hostname or current_connection["ssh"] is None:
+    if current_connection["hostname"] != hostname or current_connection["ssh_client"] is None:
         return {"error": "You need to connect to the host first before running the script."}
 
-    ssh = current_connection["ssh"]
+    ssh = current_connection["ssh_client"]
 
     try:
         stdin, stdout, stderr = ssh.exec_command(f"python {script_path}")

@@ -9,17 +9,17 @@ import {
   Alert,
 } from "@mui/material";
 
-const RemoteAccess = ({ app, env, user, onConnected }) => {
+const RemoteAccess = ({ app, env, user, onConnected,  connectedIndex, setConnectedIndex, }) => {
   const [status, setStatus] = useState(null);
   const [loadingIndex, setLoadingIndex] = useState(null);
-  const [connectedIndex, setConnectedIndex] = useState(null);
+  // const [connectedIndex, setConnectedIndex] = useState(null);
 
   const isJumpServer = app === "jump-server";
   const isMultiServer = !isJumpServer && (env === "qs" || env === "prod");
 
   const handleConnect = async (index) => {
     setLoadingIndex(index);
-    setConnectedIndex(null);
+    // setConnectedIndex(null);
     setStatus(null);
 
     // Single unified connectToServer function handles jump-server internally
