@@ -71,6 +71,7 @@ const HomePage = () => {
               />
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
               {/* Conditionally show restart button and script runner */}
               {showRestartButton && (
                 <div style={{ marginTop: "20px" }}>
@@ -84,6 +85,8 @@ const HomePage = () => {
                   />
                 </div>
 =======
+=======
+>>>>>>> Stashed changes
               {/* MLaaS Button for QS or PROD */}
               {showMLaaSButton && (
                 <button
@@ -108,6 +111,9 @@ const HomePage = () => {
                 >
                   Check Logs on MLaaS
                 </button>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
               )}
 
